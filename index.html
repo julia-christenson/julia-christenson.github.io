@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Name — Data & ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #1a1a18;
+  --muted: #888880;
+  --faint: #d8d6cf;
+  --bg: #f9f7f3;
+  --paper: #ffffff;
+  --rule: #e4e2db;
+  --accent: #2a5c45;
+  --serif: 'EB Garamond', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+nav .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 52px;
+}
+.nav-name {
+  font-family: var(--serif); font-size: 17px; font-style: italic;
+  color: var(--ink); text-decoration: none;
+}
+nav ul { list-style: none; display: flex; gap: 2rem; }
+nav a {
+  color: var(--muted); text-decoration: none; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+nav a:hover { color: var(--ink); }
+
+#hero {
+  padding-top: 52px;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  border-bottom: 1px solid var(--rule);
+}
+#hero .wrap { padding-top: 4rem; padding-bottom: 4rem; }
+
+.hero-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: up 0.5s 0.1s forwards;
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  font-weight: 400; line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  opacity: 0; animation: up 0.5s 0.2s forwards;
+}
+
+.hero-bio {
+  font-size: 13px; color: var(--muted); line-height: 1.9;
+  max-width: 480px; margin-bottom: 3rem;
+  opacity: 0; animation: up 0.5s 0.35s forwards;
+}
+
+.hero-links {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  opacity: 0; animation: up 0.5s 0.45s forwards;
+}
+.hero-links a {
+  font-size: 12px; color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--faint);
+  padding-bottom: 1px; transition: border-color 0.2s, color 0.2s;
+  letter-spacing: 0.05em;
+}
+.hero-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+.hero-meta {
+  margin-top: 4.5rem; padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  display: flex; gap: 3rem; flex-wrap: wrap;
+  opacity: 0; animation: up 0.5s 0.55s forwards;
+}
+.meta-val {
+  font-family: var(--serif); font-size: 2rem;
+  font-weight: 400; color: var(--ink); line-height: 1;
+}
+.meta-val sup { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); vertical-align: super; margin-left: 1px; }
+.meta-key { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.05em; }
+
+section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+section:last-of-type { border-bottom: none; }
+
+.sec-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 3rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.about-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 0.85rem; font-size: 13px; }
+.about-text p:last-child { margin-bottom: 0; }
+
+.stack-block { margin-bottom: 1.75rem; }
+.stack-block:last-child { margin-bottom: 0; }
+.stack-head { font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.stack-items { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  font-size: 11px; padding: 3px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 2px; color: var(--ink);
+  background: var(--paper);
+}
+.chip.green { border-color: #b0cdc0; color: var(--accent); background: #f0f7f3; }
+
+.exp-list { display: flex; flex-direction: column; gap: 2.5rem; }
+.exp-item { display: grid; grid-template-columns: 160px 1fr; gap: 0 2rem; }
+.exp-date { font-size: 11px; color: var(--muted); padding-top: 2px; line-height: 1.6; }
+.exp-role { font-family: var(--serif); font-size: 16px; color: var(--ink); margin-bottom: 2px; }
+.exp-org { font-size: 11px; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 0.6rem; text-transform: uppercase; }
+.exp-bullets { padding-left: 0; list-style: none; }
+.exp-bullets li {
+  font-size: 12px; color: var(--muted); line-height: 1.75;
+  padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+}
+.exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--faint); }
+
+.proj-list { display: flex; flex-direction: column; }
+.proj-item {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 1rem; align-items: start;
+  text-decoration: none; color: inherit;
+}
+.proj-item:first-child { padding-top: 0; }
+.proj-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.proj-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.proj-tag {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); padding: 2px 7px;
+  border: 1px solid var(--rule); border-radius: 2px;
+}
+.proj-name {
+  font-family: var(--serif); font-size: 18px; color: var(--ink);
+  margin-bottom: 0.4rem; line-height: 1.2;
+}
+.proj-desc { font-size: 12px; color: var(--muted); line-height: 1.75; max-width: 480px; }
+.proj-highlight {
+  display: inline-block; font-size: 11px; color: var(--accent);
+  margin-top: 0.6rem; letter-spacing: 0.04em;
+}
+.proj-arrow {
+  font-size: 18px; color: var(--faint); margin-top: 4px;
+  transition: color 0.2s, transform 0.2s; flex-shrink: 0;
+}
+.proj-item:hover .proj-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+#contact p { color: var(--muted); font-size: 13px; max-width: 400px; margin-bottom: 2rem; line-height: 1.9; }
+.contact-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+.contact-row a {
+  font-size: 12px; color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--faint); padding-bottom: 1px;
+  letter-spacing: 0.05em; transition: color 0.2s, border-color 0.2s;
+}
+.contact-row a:hover { color: var(--accent); border-color: var(--accent); }
+
+footer {
+  padding: 2rem 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer span { font-size: 11px; color: var(--faint); }
+
+@keyframes up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.reveal.on { opacity: 1; transform: none; }
+
+@media (max-width: 600px) {
+  .about-cols { grid-template-columns: 1fr; gap: 2rem; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .exp-date { margin-bottom: 0.25rem; }
+  .hero-meta { gap: 2rem; }
+  .proj-item { grid-template-columns: 1fr; }
+  .proj-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#hero" class="nav-name">Your Name</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="wrap">
+    <p class="hero-label">Data Science &middot; Machine Learning</p>
+    <h1 class="hero-name">Your Name</h1>
+    <p class="hero-bio">
+      Undergraduate data scientist at the University of Minnesota. I work on applied ML,
+      NLP, and data pipeline engineering — currently serving as project lead at the
+      Institute for Social Research and Data Innovation.
+    </p>
+    <div class="hero-links">
+      <a href="https://github.com/yourusername" target="_blank">GitHub &#8599;</a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn &#8599;</a>
+      <a href="mailto:you@umn.edu">you@umn.edu</a>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-val">2<sup>+</sup></div>
+        <div class="meta-key">Years research exp.</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val">3</div>
+        <div class="meta-key">ML projects</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val">50k<sup>+</sup></div>
+        <div class="meta-key">Records processed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <p class="sec-label reveal">About</p>
+    <div class="about-cols reveal">
+      <div class="about-text">
+        <p>
+          I'm an undergraduate at the University of Minnesota studying statistics
+          and data science. My work sits at the intersection of applied ML,
+          research infrastructure, and data engineering.
+        </p>
+        <p>
+          At ISRDI I grew from digitizing historical census data to leading
+          ML solution development for a 10+ person research team — shipping
+          production pipelines that process thousands of records monthly.
+        </p>
+        <p>
+          I'm drawn to problems where clean data and careful modeling can
+          meaningfully reduce manual effort for researchers and practitioners.
+        </p>
+      </div>
+      <div>
+        <div class="stack-block">
+          <p class="stack-head">ML &amp; NLP</p>
+          <div class="stack-items">
+            <span class="chip green">PyTorch</span>
+            <span class="chip green">HuggingFace</span>
+            <span class="chip green">LangChain</span>
+            <span class="chip green">scikit-learn</span>
+            <span class="chip green">CatBoost</span>
+            <span class="chip green">SHAP</span>
+          </div>
+        </div>
+        <div class="stack-block">
+          <p class="stack-head">Data &amp; Engineering</p>
+          <div class="stack-items">
+            <span class="chip">Python</span>
+            <span class="chip">SQL</span>
+            <span class="chip">R</span>
+            <span class="chip">Flask</span>
+            <span class="chip">Pandas</span>
+            <span class="chip">ETL pipelines</span>
+          </div>
+        </div>
+        <div class="stack-block">
+          <p class="stack-head">Visualization</p>
+          <div class="stack-items">
+            <span class="chip">Tableau</span>
+            <span class="chip">Matplotlib</span>
+            <span class="chip">Seaborn</span>
+            <span class="chip">Librosa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <p class="sec-label reveal">Experience</p>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-date">Oct 2025 &mdash; Present</div>
+        <div>
+          <p class="exp-role">Data Scientist, Project Lead</p>
+          <p class="exp-org">ISRDI &mdash; University of Minnesota</p>
+          <ul class="exp-bullets">
+            <li>Deployed production LangChain + Gemini workflow for census metadata cleaning, reducing manual editing time by 76% across 1,000+ monthly records.</li>
+            <li>Engineered semantic clustering pipeline with HuggingFace transformers to auto-categorize 50,000+ census variables via SQL, cutting researcher query time by 60%.</li>
+            <li>Led ML solution development and prompt engineering across 3 departmental projects, establishing best practices for a 10+ person research team.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">May 2024 &mdash; Oct 2025</div>
+        <div>
+          <p class="exp-role">Research Assistant</p>
+          <p class="exp-org">ISRDI &mdash; University of Minnesota</p>
+          <ul class="exp-bullets">
+            <li>Built multi-stage ETL pipeline transforming 50+ international census datasets (1960&ndash;2022) into standardized formats for the IPUMS database, serving 50,000+ global researchers.</li>
+            <li>Implemented automated data quality validation in R, achieving 95%+ error reduction before production deployment.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">Spring 2022</div>
+        <div>
+          <p class="exp-role">Statistician &amp; Consultant</p>
+          <p class="exp-org">School Street Statistics &mdash; Owatonna, MN</p>
+          <ul class="exp-bullets">
+            <li>Built multiple linear regression models predicting 40 home values for Berkshire Hathaway, reducing MSPE by 12%.</li>
+            <li>Analyzed traffic compliance data with the Owatonna Police Department to improve local road safety.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <p class="sec-label reveal">Projects</p>
+    <div class="proj-list">
+
+      <a href="https://github.com/yourusername/bbbs-match" target="_blank" class="proj-item reveal">
+        <div>
+          <div class="proj-tags">
+            <span class="proj-tag">ML &middot; NLP</span>
+            <span class="proj-tag">CatBoost &middot; SHAP</span>
+          </div>
+          <p class="proj-name">At-Risk Match Prediction &mdash; Big Brothers Big Sisters</p>
+          <p class="proj-desc">
+            Gradient boosting model with NLP-derived sentiment features from 5,000+ case notes.
+            Achieved a 4.5-month RMSE — an 11-month improvement over the baseline.
+          </p>
+          <span class="proj-highlight">1st in Analytical Methods &middot; 6th overall &middot; MinneMUDAC 2025 (200+ participants)</span>
+        </div>
+        <span class="proj-arrow">&#8599;</span>
+      </a>
+
+      <a href="https://github.com/yourusername/ai-writing-study" target="_blank" class="proj-item reveal">
+        <div>
+          <div class="proj-proj-tags" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:0.6rem;">
+            <span class="proj-tag">Research &middot; NLP</span>
+            <span class="proj-tag">Flask &middot; Gemini API</span>
+          </div>
+          <p class="proj-name">AI Writing Assistance Study <span style="font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted);font-weight:400">(Submitted to ACL ARR)</span></p>
+          <p class="proj-desc">
+            IRB-approved controlled study (n=20) examining how AI assistance levels affect writing quality
+            and cognitive engagement. Built a Flask app with Gemini-2.5-Flash, rate-limiting, and prompt
+            logging. Analyzed 100+ prompts using LLM rubric scoring and cosine similarity — showing a 9%
+            score improvement with limited vs. unlimited AI access.
+          </p>
+        </div>
+        <span class="proj-arrow">&#8599;</span>
+      </a>
+
+      <a href="https://github.com/yourusername/acoustic-classification" target="_blank" class="proj-item reveal">
+        <div>
+          <div class="proj-tags">
+            <span class="proj-tag">Deep Learning</span>
+            <span class="proj-tag">PyTorch &middot; Librosa</span>
+          </div>
+          <p class="proj-name">Cross-Domain Acoustic Instrument Classification</p>
+          <p class="proj-desc">
+            CNN trained on 64,000+ audio samples, achieving F1 of 0.991. Improved cross-dataset
+            generalization from 38.7% to 78.4% via transfer learning and MFCC / VGGish feature
+            engineering. Accompanied by a research paper on domain adaptation in audio classification.
+          </p>
+        </div>
+        <span class="proj-arrow">&#8599;</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <p class="sec-label reveal">Contact</p>
+    <p class="reveal">
+      Currently a student open to research collaborations,
+      internships, and data science opportunities for 2026.
+    </p>
+    <div class="contact-row reveal">
+      <a href="mailto:you@umn.edu">you@umn.edu</a>
+      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>Your Name &middot; 2026</span>
+    <span>University of Minnesota</span>
+  </footer>
+</div>
+
+<script>
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+    }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
